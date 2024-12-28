@@ -10,7 +10,7 @@ import {
   ViewProps,
   FlatListProps,
 } from 'react-native';
-import { FlatList, GestureHandlerRootView  } from "react-native-gesture-handler"
+import { FlatList  } from "react-native-gesture-handler"
 import styles from './WheelPicker.styles';
 import WheelPickerItem from './WheelPickerItem';
 
@@ -114,8 +114,6 @@ const WheelPicker: React.FC<Props> = ({
   }, [selectedIndex]);
 
   return (
-    <GestureHandlerRootView>
-
     <View
       style={[styles.container, { height: containerHeight }, containerStyle]}
       {...containerProps}
@@ -167,7 +165,6 @@ const WheelPicker: React.FC<Props> = ({
         )}
       />
     </View>
-    </GestureHandlerRootView>
   );
 };
 
