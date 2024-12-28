@@ -31,6 +31,7 @@ interface Props {
   decelerationRate?: 'normal' | 'fast' | number;
   flatListProps?: Omit<FlatListProps<string | null>, 'data' | 'renderItem'>;
 }
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const WheelPicker: React.FC<Props> = ({
   selectedIndex,
@@ -51,6 +52,8 @@ const WheelPicker: React.FC<Props> = ({
 }) => {
   const flatListRef = useRef<FlatList>(null);
   const [scrollY] = useState(new Animated.Value(0));
+
+  console.log("SCROLL",scrollY)
 
   const containerHeight = (1 + visibleRest * 2) * itemHeight;
   const paddedOptions = useMemo(() => {
@@ -78,6 +81,7 @@ const WheelPicker: React.FC<Props> = ({
     // Due to list bounciness when scrolling to the start or the end of the list
     // the offset might be negative or over the last item.
     // We therefore clamp the offset to the supported range.
+    console.log("SASADSDSD")
     const offsetY = Math.min(
       itemHeight * (options.length - 1),
       Math.max(event.nativeEvent.contentOffset.y, 0),
@@ -107,6 +111,7 @@ const WheelPicker: React.FC<Props> = ({
    * This ensures that what the user sees as selected in the picker always corresponds to the value state.
    */
   useEffect(() => {
+    console.log("SELECTED",selectedIndex)
     flatListRef.current?.scrollToIndex({
       index: selectedIndex,
       animated: false,
@@ -128,8 +133,9 @@ const WheelPicker: React.FC<Props> = ({
           },
         ]}
       />
-      <Animated.FlatList<string | null>
+      <AnimatedFlatList
         {...flatListProps}
+        //@ts-ignore
         ref={flatListRef}
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -141,14 +147,14 @@ const WheelPicker: React.FC<Props> = ({
         snapToOffsets={offsets}
         decelerationRate={decelerationRate}
         initialScrollIndex={selectedIndex}
-        getItemLayout={(data, index) => ({
+        getItemLayout={(data:any, index:any) => ({
           length: itemHeight,
           offset: itemHeight * index,
           index,
         })}
         data={paddedOptions}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item: option, index }) => (
+        keyExtractor={(item:any, index:any) => index.toString()}
+        renderItem={({ item: option, index }:any) => (
           <WheelPickerItem
             key={`option-${index}`}
             index={index}
